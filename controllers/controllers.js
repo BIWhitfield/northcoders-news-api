@@ -1,5 +1,5 @@
 const { Users, Comments, Topics, Articles } = require("../models/models");
-
+const { map } = require('async')
 exports.getAllTopics = (req, res) => {
   Topics.find({}, (err, topics) => {
     if (err) return res.status(500).send("balls");
@@ -10,7 +10,7 @@ exports.getAllTopics = (req, res) => {
 exports.getArticlesByTopic = (req, res) => {
   const url = req.url.split("/");
   const title = url[3];
-  Articles.find("articles", function(err, data) {
+  Articles.find("articles", function (err, data) {
     if (err) return res.status(500).send("Boo hoo get tae fuck!");
     const articles = data.filter(article => {
       if (article.belongs_to === title.toLowerCase())
@@ -25,10 +25,39 @@ exports.getArticlesByTopic = (req, res) => {
   });
 };
 
-exports.getAllArticles = (req,res) => {
-Articles.find({}, (err, articles) => {
+exports.getAllArticles = (req, res) => {
+  Articles.find({}, (err, articles) => {
     if (err) return res.status(500).send("balls");
     res.status(200).json({ articles: articles });
   });
 };
 
+exports.getAllCommentsForArticle = (req, res) => {
+  const id = req.params.article_id;
+  Comments.find({belongs_to: id}, (err, comments) => {
+    if (err) return res.status(500).json(err);
+    res.json(comments);
+  });
+};
+
+
+
+
+
+
+
+
+// exports.getAllComments = (req, res) => {
+//   const url = req.url.split("/");
+//   const title = url[3];
+//   Articles.find("articles", (err, data) => {
+//     if (err) return res.status(500).send("Boo hoo get tae fuck!");
+//     const comments = data.filter(article => {
+//      if (article.title === title.toLowerCase()) 
+//      return Comments.find("comments",(err,data) => {
+//     if (err) return res.status(500).send("Boo hoo get tae fuck!");
+//     const commnets = data. 
+//      })
+//     });
+//   });
+// };
