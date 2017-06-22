@@ -8,6 +8,15 @@ exports.getAllTopics = (req, res) => {
 };
 
 exports.getArticlesByTopic = (req, res) => {
+  const topic = req.params.topic_title;
+  Articles.find({belongs_to: topic}, (err, articles) => {
+    if (err) return res.status(500).json(err);
+    res.json(articles);
+  });
+};
+
+/*
+exports.getArticlesByTopic = (req, res) => {
   const url = req.url.split("/");
   const title = url[3];
   Articles.find("articles", function (err, data) {
@@ -24,7 +33,7 @@ exports.getArticlesByTopic = (req, res) => {
     res.status(200).json({ topic: articles });
   });
 };
-
+*/
 exports.getAllArticles = (req, res) => {
   Articles.find({}, (err, articles) => {
     if (err) return res.status(500).send("balls");
@@ -39,25 +48,3 @@ exports.getAllCommentsForArticle = (req, res) => {
     res.json(comments);
   });
 };
-
-
-
-
-
-
-
-
-// exports.getAllComments = (req, res) => {
-//   const url = req.url.split("/");
-//   const title = url[3];
-//   Articles.find("articles", (err, data) => {
-//     if (err) return res.status(500).send("Boo hoo get tae fuck!");
-//     const comments = data.filter(article => {
-//      if (article.title === title.toLowerCase()) 
-//      return Comments.find("comments",(err,data) => {
-//     if (err) return res.status(500).send("Boo hoo get tae fuck!");
-//     const commnets = data. 
-//      })
-//     });
-//   });
-// };
