@@ -24,3 +24,11 @@ exports.getArticlesByTopic = (req, res) => {
     res.status(200).json({ topic: articles });
   });
 };
+
+exports.getAllArticles = (req,res) => {
+Articles.find({}, (err, articles) => {
+    if (err) return res.status(500).send("balls");
+    res.status(200).json({ articles: articles });
+  });
+};
+

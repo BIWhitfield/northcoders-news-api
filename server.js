@@ -7,7 +7,7 @@ const app = express();
 const config = require('./config');
 const db = config.DB[process.env.NODE_ENV] || process.env.DB;
 const PORT = config.PORT[process.env.NODE_ENV] || process.env.PORT;
-const {getAllTopics, getArticlesByTopic} = require('./controllers/controllers');
+const {getAllTopics, getArticlesByTopic,getAllArticles} = require('./controllers/controllers');
 
 mongoose.connect(db, function (err) {
   if (!err) {
@@ -24,6 +24,7 @@ app.get('/', function (req, res) {
 
 app.get('/api/topics', getAllTopics);
 app.get('/api/topics/:topic_title/articles', getArticlesByTopic);
+app.get('/api/articles',getAllArticles);
 
 app.use('/api', function () {});
 
