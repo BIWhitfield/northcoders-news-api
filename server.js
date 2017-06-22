@@ -12,7 +12,8 @@ const {
   getArticlesByTopic, 
   getAllArticles, 
   getAllCommentsForArticle, 
-  postNewCommentToArticle
+  postNewCommentToArticle,
+  getUserProfile
 } = require('./controllers/controllers');
 
 mongoose.connect(db, function (err) {
@@ -34,9 +35,9 @@ app.get('/api/topics', getAllTopics);
 app.get('/api/topics/:topic_title/articles', getArticlesByTopic);
 app.get('/api/articles',getAllArticles);
 app.get('/api/articles/:article_id/comments',getAllCommentsForArticle);
+app.get('/api/users/:username', getUserProfile)
 
 app.post('/api/articles/:article_id/comments', postNewCommentToArticle);
-
 
 app.use('/api', function () {});
 
