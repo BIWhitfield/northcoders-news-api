@@ -49,5 +49,5 @@ exports.getUserProfile = (req, res) => {
     Users.findOne({username: username}, (err, user) => {
         if (err) return res.status(500).json(err);
         res.json(user);
-    })
-}
+    });
+};
