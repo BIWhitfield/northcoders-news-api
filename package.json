@@ -4,7 +4,7 @@
   "description": "### Background",
   "main": "config.js",
   "scripts": {
-    "test": "mocha ./spec",
+    "test": "NODE_ENV=test mocha ./spec",
     "start": "nodemon server.js",
     "lint": "eslint ./",
     "posttest": "npm run lint",

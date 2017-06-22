@@ -52,8 +52,8 @@ function saveComments (articlesArray, cb) {
 }
 
 function saveTestData (DB, cb) {
-  mongoose.connect(DB);
-  mongoose.connection.dropDatabase();
+  // mongoose.connect(DB);
+  // mongoose.connection.dropDatabase();
 
   async.waterfall([saveUser, saveTopics, saveArticles, saveComments], (err, ids) => {
     if (err) console.log(err);

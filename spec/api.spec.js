@@ -9,6 +9,7 @@ const db = config.DB[process.env.NODE_ENV] || process.env.DB;
 describe('API', function () {
   let usefulIds;
   beforeEach(done => {
+    
     saveTestData(db, (err, savedData) => {
       if (err) {
         console.log(err);
@@ -31,6 +32,19 @@ describe('API', function () {
             done();
           }
         });
+    });
+  });
+  describe('GET /api/topics', () => {
+    it('responds with topics', (done) => {
+      request(server)
+      .get('/api/topics')
+      .end((err, res) => {
+        console.log(res.body)
+        expect(res.status).to.equal(200);
+        expect(res.body.topics).to.be.an('array');
+        expect(res.body.topics.length).to.equal(3);
+        done();
+      });
     });
   });
 });
