@@ -65,8 +65,8 @@ exports.putVoteCount = (req, res) => {
   });
 };
 
-exports.putCommentVoteCount = (req,res) => {
-   const query = req.query.vote;
+exports.putCommentVoteCount = (req, res) => {
+  const query = req.query.vote;
   const id = req.params.comment_id;
   let inc;
   if (query === 'up') inc = 1;
@@ -77,3 +77,11 @@ exports.putCommentVoteCount = (req,res) => {
     res.json({ message: comment.votes });
   });
 };
+
+exports.deleteComment = (req, res) => {
+  const id = req.params.comment_id;
+  Comments.findByIdAndRemove(id,(err) => {
+    if (err) return res.status(500).json(err);
+res.json({message: 'You\'ve deleted your comment. Prick'});
+  });
+}
