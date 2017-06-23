@@ -7,17 +7,8 @@ const app = express();
 const config = require('./config');
 const db = config.DB[process.env.NODE_ENV] || process.env.DB;
 const PORT = config.PORT[process.env.NODE_ENV] || process.env.PORT;
-const {
-  getAllTopics, 
-  getArticlesByTopic, 
-  getAllArticles, 
-  getAllCommentsForArticle, 
-  postNewCommentToArticle,
-  getUserProfile,
-  putVoteCount,
-  putCommentVoteCount,
-  deleteComment
-} = require('./controllers/controllers');
+
+const apiRouter = require('./routes/api');
 
 mongoose.connect(db, function (err) {
   if (!err) {
@@ -30,27 +21,21 @@ mongoose.connect(db, function (err) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/', function (req, res) {
-  res.status(200).send('All good!');
-});
-
-app.get('/api/topics', getAllTopics);
-app.get('/api/topics/:topic_title/articles', getArticlesByTopic);
-app.get('/api/articles',getAllArticles);
-app.get('/api/articles/:article_id/comments',getAllCommentsForArticle);
-app.get('/api/users/:username', getUserProfile)
-
-app.post('/api/articles/:article_id/comments', postNewCommentToArticle);
-
-app.put('/api/articles/:article_id',putVoteCount);
-app.put('/api/comments/:comment_id',putCommentVoteCount);
-
-app.delete('/api/comments/:comment_id',deleteComment)
-
-app.use('/api', function () {});
+app.use('/api', apiRouter);
 
 app.listen(PORT, function () {
   console.log(`listening on port ${PORT}`);
+});
+
+app.use(function (err, req, res, next) {
+  if (err.status) {
+    res.status(err.status).json({message: err.message});
+  }
+  next(err);
+});
+
+app.use(function (err, req, res) { 
+  res.status(500).json({message: 'server error'}); 
 });
 
 module.exports = app;
