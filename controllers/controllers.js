@@ -61,7 +61,19 @@ exports.putVoteCount = (req, res) => {
 
   Articles.findByIdAndUpdate(id, { $inc: { votes: inc } }, { new: true }, (err, article) => {
     if (err) return res.status(500).json(err);
-    console.log(article)
     res.json({ message: article.votes });
+  });
+};
+
+exports.putCommentVoteCount = (req,res) => {
+   const query = req.query.vote;
+  const id = req.params.comment_id;
+  let inc;
+  if (query === 'up') inc = 1;
+  if (query === 'down') inc = -1;
+
+  Comments.findByIdAndUpdate(id, { $inc: { votes: inc } }, { new: true }, (err, comment) => {
+    if (err) return res.status(500).json(err);
+    res.json({ message: comment.votes });
   });
 };

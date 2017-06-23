@@ -14,7 +14,8 @@ const {
   getAllCommentsForArticle, 
   postNewCommentToArticle,
   getUserProfile,
-  putVoteCount
+  putVoteCount,
+  putCommentVoteCount
 } = require('./controllers/controllers');
 
 mongoose.connect(db, function (err) {
@@ -41,6 +42,7 @@ app.get('/api/users/:username', getUserProfile)
 app.post('/api/articles/:article_id/comments', postNewCommentToArticle);
 
 app.put('/api/articles/:article_id',putVoteCount);
+app.put('/api/comments/:comment_id',putCommentVoteCount);
 
 app.use('/api', function () {});
 
