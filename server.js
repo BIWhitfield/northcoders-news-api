@@ -13,7 +13,8 @@ const {
   getAllArticles, 
   getAllCommentsForArticle, 
   postNewCommentToArticle,
-  getUserProfile
+  getUserProfile,
+  putVoteCount
 } = require('./controllers/controllers');
 
 mongoose.connect(db, function (err) {
@@ -38,6 +39,8 @@ app.get('/api/articles/:article_id/comments',getAllCommentsForArticle);
 app.get('/api/users/:username', getUserProfile)
 
 app.post('/api/articles/:article_id/comments', postNewCommentToArticle);
+
+app.put('/api/articles/:article_id',putVoteCount);
 
 app.use('/api', function () {});
 
