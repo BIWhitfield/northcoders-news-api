@@ -1,18 +1,21 @@
 const { Users, Comments, Topics, Articles } = require("../models/models");
-const { map } = require("async");
 
-exports.getAllTopics = (req, res) => {
+exports.getAllTopics = (req, res, next) => {
   Topics.find({}, (err, topics) => {
-    if (err) return res.status(500).send("balls");
-    res.status(200).json({ topics: topics });
+    if (!err) {
+      res.status(200).json({ topics: topics });
+    }
+      next(err);
   });
 };
 
-exports.getArticlesByTopic = (req, res) => {
+exports.getArticlesByTopic = (req, res, next) => {
   const topic = req.params.topic_title;
   Articles.find({ belongs_to: topic }, (err, articles) => {
-    if (err) return res.status(500).json(err);
-    res.json(articles);
+    if (!err) {
+      res.json({articles});
+    }
+   next(err);
   });
 };
 
@@ -38,10 +41,11 @@ exports.postNewCommentToArticle = (req, res) => {
   comment.belongs_to = id;
 
   comment
-    .save(function (err, comment) {
-      if (err) console.log(err);
+    .save()
+    .then((comment) => {
+      res.status(201).json({comment});
     })
-    .then(res.send("Comment posted!"));
+    .catch(console.log);  
 };
 
 exports.getUserProfile = (req, res) => {
@@ -56,32 +60,42 @@ exports.putVoteCount = (req, res) => {
   const query = req.query.vote;
   const id = req.params.article_id;
   let inc;
-  if (query === 'up') inc = 1;
-  if (query === 'down') inc = -1;
+  if (query === "up") inc = 1;
+  if (query === "down") inc = -1;
 
-  Articles.findByIdAndUpdate(id, { $inc: { votes: inc } }, { new: true }, (err, article) => {
-    if (err) return res.status(500).json(err);
-    res.json({ message: article.votes });
-  });
+  Articles.findByIdAndUpdate(
+    id,
+    { $inc: { votes: inc } },
+    { new: true },
+    (err, article) => {
+      if (err) return res.status(500).json(err);
+      res.json({ message: article.votes });
+    }
+  );
 };
 
 exports.putCommentVoteCount = (req, res) => {
   const query = req.query.vote;
   const id = req.params.comment_id;
   let inc;
-  if (query === 'up') inc = 1;
-  if (query === 'down') inc = -1;
+  if (query === "up") inc = 1;
+  if (query === "down") inc = -1;
 
-  Comments.findByIdAndUpdate(id, { $inc: { votes: inc } }, { new: true }, (err, comment) => {
-    if (err) return res.status(500).json(err);
-    res.json({ message: comment.votes });
-  });
+  Comments.findByIdAndUpdate(
+    id,
+    { $inc: { votes: inc } },
+    { new: true },
+    (err, comment) => {
+      if (err) return res.status(500).json(err);
+      res.json({ message: comment.votes });
+    }
+  );
 };
 
 exports.deleteComment = (req, res) => {
   const id = req.params.comment_id;
-  Comments.findByIdAndRemove(id,(err) => {
+  Comments.findByIdAndRemove(id, err => {
     if (err) return res.status(500).json(err);
-res.json({message: 'You\'ve deleted your comment. Prick'});
+    res.json({ message: "You've deleted your comment. Prick" });
   });
-}
+};
