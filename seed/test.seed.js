@@ -1,62 +1,59 @@
-const async = require('async');
+/* eslint-disable no-console */
+const { Users, Comments, Topics, Articles } = require('../models/models');
 
-const models = require('../models/models');
+const savedData = {};
 
-const topics = [
-  new models.Topics({ title: 'Football', slug: 'football' }),
-  new models.Topics({ title: 'Cooking', slug: 'cooking' }),
-  new models.Topics({ title: 'Cats', slug: 'cats' })
-];
-
-const articles = [
-  new models.Articles({ title: 'Cats are great', body: 'something', belongs_to: 'cats' }),
-  new models.Articles({ title: 'Football is fun', body: 'something', belongs_to: 'football' })
-];
-
-const user = new models.Users({
-  username: 'northcoder',
-  name: 'Awesome Northcoder',
-  avatar_url: 'https://avatars3.githubusercontent.com/u/6791502?v=3&s=200'
-});
-
-function saveUser(cb) {
-  user.save((err) => {
-    if (err) cb(err);
-    else cb();
+function saveUser () {
+  const user = new Users({
+    username: 'northcoder',
+    name: 'Awesome Northcoder',
+    avatar_url: 'https://avatars3.githubusercontent.com/u/6791502?v=3&s=200'
   });
+  return user.save();
 }
 
-function saveTopics(cb) {
-  models.Topics.create(topics, (err) => {
-    if (err) cb(err);
-    else cb();
-  });
+function saveTopics() {
+  const topics = [
+    { title: 'Football', slug: 'football' },
+    { title: 'Cooking', slug: 'cooking' },
+    { title: 'Cats', slug: 'cats' }
+  ].map(t => new Topics(t).save());
+  return Promise.all(topics);
 }
 
-function saveArticles(cb) {
-  models.Articles.create(articles, (err, docs) => {
-    if (err) cb(err);
-    else cb(null, docs);
-  });
+function saveArticles() {
+  const articles = [
+    { title: 'Cats are great', body: 'something', belongs_to: 'cats' },
+    { title: 'Football is fun', body: 'something', belongs_to: 'football' }
+  ].map(a => new Articles(a).save());
+  return Promise.all(articles);
 }
 
-function saveComments(articlesArray, cb) {
-  const articleId = articlesArray[0]._id;
-  const comment = new models.Comments({ body: 'this is a comment', belongs_to: articleId, created_by: 'northcoder' });
-  const comment2 = new models.Comments({ body: 'this is another comment', belongs_to: articleId, created_by: 'northcoder' });
-  models.Comments.create([comment, comment2], err => {
-    if (err) cb(err);
-    else cb(null, { article_id: articleId, comment_id: comment._id, non_northcoder_comment: comment2._id });
-  });
+function saveComments(articles) {
+  const comments = [
+    { body: 'this is a comment', belongs_to: articles[0]._id, created_by: 'northcoder' },
+    { body: 'this is another comment', belongs_to: articles[0]._id, created_by: 'northcoder' }
+  ].map(c => new Comments(c).save());
+  return Promise.all(comments);
 }
 
-function saveTestData(DB, cb) {
-    async.waterfall([saveUser, saveTopics, saveArticles, saveComments], (err, ids) => {
-      if (err) cb(err);
-      else {
-        console.log('Test data seeded successfully.');
-        cb(null, ids);
-      }
+function saveTestData() {
+  return saveUser()
+    .then((user) => {
+      savedData.user = user;
+      return saveTopics();
+    })
+    .then(topics => {
+      savedData.topics = topics;
+      return saveArticles();
+    })
+    .then(articles => {
+      savedData.articles = articles;
+      return saveComments(articles);
+    })
+    .then((comments) => {
+      savedData.comments = comments;
+      return savedData;
     });
 }
 
