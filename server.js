@@ -27,6 +27,7 @@ app.listen(PORT, function () {
   console.log(`listening on port ${PORT}`);
 });
 
+
 app.use(function (err, req, res, next) {
   if (err.status) {
     res.status(err.status).json({message: err.message});
@@ -34,7 +35,7 @@ app.use(function (err, req, res, next) {
   next(err);
 });
 
-app.use(function (err, req, res) { 
+app.use(function (err, req, res, next) { 
   res.status(500).json({message: 'server error'}); 
 });
 
