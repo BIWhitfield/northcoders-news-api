@@ -7,6 +7,7 @@ const app = express();
 const config = require('./config');
 const db = config.DB[process.env.NODE_ENV] || process.env.DB;
 const PORT = config.PORT[process.env.NODE_ENV] || process.env.PORT;
+const cors = require('cors');
 
 const apiRouter = require('./routes/api');
 
@@ -21,12 +22,13 @@ mongoose.connect(db, function (err) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(cors());
+
 app.use('/api', apiRouter);
 
 app.listen(PORT, function () {
   console.log(`listening on port ${PORT}`);
 });
-
 
 app.use(function (err, req, res, next) {
   if (err.status) {
