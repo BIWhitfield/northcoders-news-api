@@ -1,3 +1,4 @@
+
 if (!process.env.NODE_ENV) process.env.NODE_ENV = 'dev';
 
 const express = require('express');
@@ -37,7 +38,7 @@ app.use(function (err, req, res, next) {
   next(err);
 });
 
-app.use(function (err, req, res, next) { 
+app.use(function (err, req, res, next) { // eslint-disable-line no-unused-vars
   res.status(500).json({message: 'server error'}); 
 });
 
