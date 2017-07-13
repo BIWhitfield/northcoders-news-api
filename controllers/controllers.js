@@ -1,3 +1,4 @@
+
 const { Users, Comments, Topics, Articles } = require("../models/models");
 
 exports.getAllTopics = (req, res, next) => {
@@ -44,7 +45,7 @@ exports.getAllCommentsForArticle = (req, res, next) => {
   });
 };
 
-exports.postNewCommentToArticle = (req, res, next) => {
+exports.postNewCommentToArticle = (req, res, next) => { // eslint-disable-line no-unused-vars
   const id = req.params.article_id;
   var comment = new Comments();
   comment.body = req.body.comment;
