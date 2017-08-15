@@ -1,43 +1,47 @@
-## Northcoders News API
+# Northcoders News API
 
-### Background
+Northcoders News API is a RESTful api which has been created using Node.js, Express.js, MongoDB and Mongoose.
 
-We will be building an API which we will be using later on during the
-Front End block of the course. Your mongoose models and a Database seed file have been done for you.
+This repo contains all the code for the backend of the project. The front end repo can be found <a href="https://github.com/BIWhitfield/northcoders-news">here</a>.
 
-A working version of the API has been built for you to interact with. Look closely at the response you get for each route on [http://northcoders-news-api.herokuapp.com/](http://northcoders-news-api.herokuapp.com/). You will notice that we also send data such as the comment and vote count for each article. You will need to think carefully about how to do this in your API.
+## Getting Started
 
-You will need to get all your routes built up first as you can share the functionality between you `GET comments by id` route and the comment count on the articles response for example.
+The API and all of its endpoints have been fully tested. If you would like to run the tests please ensure you have Node v8.0.0 or higher installed. You can check this by entering the following command into your terminal:
 
-### Mongoose Documentation
+node -v
 
-The below are all model methods that you call on your models.
+If you do not have the correct version of node click <a href="https://nodejs.org/en/">here</a> to install the latest version.
 
-* [find](http://mongoosejs.com/docs/api.html#model_Model.find)
-* [findOne](http://mongoosejs.com/docs/api.html#model_Model.findOne)
-* [findOneAndUpdate](http://mongoosejs.com/docs/api.html#model_Model.findOneAndUpdate)
-* [findOneAndRemove](http://mongoosejs.com/docs/api.html#model_Model.findOneAndRemove)
-* [findById](http://mongoosejs.com/docs/api.html#model_Model.findById)
-* [findByIdAndUpdate](http://mongoosejs.com/docs/api.html#model_Model.findByIdAndUpdate)
-* [findByIdAndRemove](http://mongoosejs.com/docs/api.html#model_Model.findByIdAndRemove)
-* [update](http://mongoosejs.com/docs/api.html#model_Model.update)
+Then please ensure you have mongo installed, a guide can be found <a href="https://docs.mongodb.com/manual/installation/">here</a>
 
-There are also some methods that can be called on new or retrieved documents. These are:
+To now run the tests please clone the project, cd into the repo and install the dependencies:
 
-* [remove](http://mongoosejs.com/docs/api.html#model_Model-remove)
-* [save](http://mongoosejs.com/docs/api.html#model_Model-save)
-* [count](http://mongoosejs.com/docs/api.html#model_Model.count)
+`git clone https://github.com/BIWhitfield/northcoders-news-api.git`
 
-### Tasks
+`cd northcoders-news-api`
 
-1. Seed your database with the main seed file `$ node seed/seed.js`
-2. Build your express App
-3. Mount an API Router onto your app
-4. Define the routes described below using TDD
-5. Define controller functions for each of your routes
-6. Once you have all your routes, tackle adding the vote and comment counts to every article when the articles are requested. Here is an example of what the response should look like: [http://northcoders-news-api.herokuapp.com/api/articles](http://northcoders-news-api.herokuapp.com/api/articles). You will need to use [Async.js](https://caolan.github.io/async/) or Promises. The [Bluebird](http://bluebirdjs.com/docs/api-reference.html) library provides extended functionality for Promises and may come in handy.
+`npm install`
 
-### Routes
+Once all dependencies have been installed, open a second shell in your terminal. In this run mongodb by entering the following command:
+
+`mongod`
+
+Now you can run the tests in your original shell by entering:
+
+`npm test`
+
+
+# Built With
+
+* Express
+* MongoDB
+* Mongoose
+* Mocha
+* Chai
+
+
+
+# Routes
 
 | Route |   |
 | ------|---|
